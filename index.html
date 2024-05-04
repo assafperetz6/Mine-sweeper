@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine sweeper</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="onInit()">
+    <h1>Mine sweeper</h1>
+
+    <div class="modal"></div>
+
+    <div class="game-controls">
+        <div class="game-info">
+            <div class="game-mode-btns">
+                <button id="beginner-btn">Beginner</button>
+                <button id="medium-btn">Medium</button>
+                <button id="expert-btn">Expert</button>
+            </div>
+            <img class="reset-game" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
+            <span class="time">time</span>
+        </div>
+    </div>
+
+    <table class="board-container">
+        <tbody class="board"></tbody>
+    </table>
+    
+
+    <footer>Assaf Peretz</footer>
+    
+    <script src="js/game.js"></script>
+    <script src="js/gameControls.js"></script>
+    <script src="js/cellClicks.js"></script>
+    <script src="js/utils.js"></script>
+</body>
+</html>
