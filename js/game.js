@@ -2,13 +2,9 @@
 
 var gBoard
 
-var gLevel = {
-	SIZE: 4,
-	MINES: 2
-	}
-
 var	gGame = {
 		isOn: false,
+		isFirstTurn: true,
 		shownCount: 0,
 		numsCount: 0,
 		markedCount: 0,
@@ -23,8 +19,9 @@ function onInit() {
 
 	gBoard = buildBoard()
 	renderBoard(gBoard)
-	
-	rightClick()
+
+	initializeClickListeners()
+
 	gGame.isOn = true
 }
 
@@ -44,13 +41,6 @@ function buildBoard() {
 					mineNegCount: 0
 				}
 		}
-	}
-
-	for (var i = 0; i < 2; i++) {
-		const randCell = board[getRandomIntInclusive(0, 3)][getRandomIntInclusive(0, 3)]
-		randCell.isMine = true
-		gGame.mines.push(randCell.location)
-
 	}
 	return board
 }
@@ -102,9 +92,26 @@ function renderBoard(board) {
 	elBoard.innerHTML = strHTML
 }
 
+function setMines(negCells, rowIdx, colIdx) {
+
+	for (var i = 0; i < gLevel.MINES; i++) {
+
+		var randCell = gBoard[getRandomInt(0, gLevel.SIZE)][getRandomInt(0, gLevel.SIZE)]
+
+		if (gGame.mines.includes(randCell.location) || negCells.includes(randCell) || randCell === gBoard[rowIdx][colIdx]) {
+			i--
+			continue
+		}
+
+		randCell.isMine = true
+		gGame.mines.push(randCell.location)
+	}
+}
+
 function setMinesNegCount(board, rowIdx, colIdx) {
 	
 	var mineNegCount = 0
+	var negCells = []
 
 	for (var i = rowIdx - 1 ; i <= rowIdx + 1; i++) {
 
@@ -115,15 +122,26 @@ function setMinesNegCount(board, rowIdx, colIdx) {
 			if (j < 0 || j >= board[0].length) continue
         	if (i === rowIdx && j === colIdx) continue	
 
-			if (board[i][j].isMine) {
-				mineNegCount++
-			}
+			if (board[i][j].isMine) mineNegCount++
+			else negCells.push(board[i][j])
 		}
-		
 	}
 
+	if (gGame.isFirstTurn) {
+        gGame.isFirstTurn = false
+		setMines(negCells, rowIdx, colIdx)
+    }
+
 	board[rowIdx][colIdx].mineNegCount = mineNegCount
-	return mineNegCount > 0 ? mineNegCount : ''
+
+	if (mineNegCount === 0) {
+		negCells.forEach(cell => {
+			if (!cell.isMine) onCellClicked(board, cell.location.i, cell.location.j)
+		})
+		return ''
+	}
+
+	return mineNegCount
 }
 
 function checkWin() {

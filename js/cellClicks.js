@@ -3,10 +3,13 @@
 const FLAG = '🚩'
 const BOMB = '💣'
 
+
 function onCellClicked(board, rowIdx, colIdx) {
+
+    // debugger
     if(!gGame.isOn) return
 
-	const clickedCell = board[rowIdx][colIdx]
+    const clickedCell = board[rowIdx][colIdx]
 
     if(clickedCell.isShown) return
     if(clickedCell.isFlagged) return
@@ -17,17 +20,20 @@ function onCellClicked(board, rowIdx, colIdx) {
 	}
 
     clickedCell.isShown = true
+    
     gGame.shownCount++
     
 	setMinesNegCount(board, rowIdx, colIdx)
+
 	renderCell(rowIdx, colIdx, clickedCell.mineNegCount)
+
 
     checkWin()
 }
 
-function rightClick() {
-    const elBoard = document.querySelector('.board')
+function initializeClickListeners() {
 
+    const elBoard = document.querySelector('.board')
     elBoard.addEventListener('contextmenu', flagCell, false)
 }
 
@@ -37,7 +43,6 @@ function flagCell(ev) {
 
     if(!gGame.isOn) return
 
-    console.log(ev);
 	const elClickedCell = ev.target
 	const cellRowIdx = elClickedCell.dataset.i
 	const cellColIdx = elClickedCell.dataset.j
@@ -68,7 +73,10 @@ function flagCell(ev) {
 function renderCell(rowIdx, colIdx, value) {
 	const elCell = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
 	
-    if(value === 0) value = ''
+    if(value === 0) {
+        value = ''
+        elCell.classList.add('empty-cell')
+    }
 
 	elCell.innerText = value
 }

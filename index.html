@@ -9,17 +9,17 @@
 <body onload="onInit()">
     <h1>Mine sweeper</h1>
 
-    <div class="modal"></div>
-
+    
     <div class="game-controls">
         <div class="game-info">
             <div class="game-mode-btns">
-                <button id="beginner-btn">Beginner</button>
-                <button id="medium-btn">Medium</button>
-                <button id="expert-btn">Expert</button>
+                <button id="easy-btn" onclick="onSetGameLevel('easy')">Easy</button>
+                <button id="medium-btn" onclick="onSetGameLevel('medium')">Medium</button>
+                <button id="hard-btn" onclick="onSetGameLevel('hard')">Hard</button>
             </div>
             <img class="reset-game" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
             <span class="time">time</span>
+            <div class="modal"></div>
         </div>
     </div>
 
