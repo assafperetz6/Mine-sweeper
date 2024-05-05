@@ -53,9 +53,9 @@ h1 {
 
 
 .cell {
-    font-size: 1.5em;
-    width: 2em;
-    height: 2em;
+    font-size: 1em;
+    width: 1.5em;
+    height: 1.5em;
     border: 1px solid rgb(77, 77, 77);
     background-color: rgb(144, 144, 144);
     transition: 350ms;
