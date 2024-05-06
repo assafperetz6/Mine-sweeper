@@ -13,19 +13,27 @@
     <div class="game-controls">
         <div class="game-info">
             <div class="game-mode-btns">
+                <button class="hint-btn" onclick="getHint()">3X💡</button>
                 <button id="easy-btn" onclick="onSetGameLevel('easy')">Easy</button>
                 <button id="medium-btn" onclick="onSetGameLevel('medium')">Medium</button>
                 <button id="hard-btn" onclick="onSetGameLevel('hard')">Hard</button>
+                <img class="reset-btn" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
             </div>
-            <img class="reset-game" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
-            <span class="time">time</span>
-            <div class="modal"></div>
+            <span>Time elapsed: 
+                <span class="timer">00:00</span>
+                <span class="lives"></span>
+            </span>
         </div>
+        <div class="modal"></div>
     </div>
 
     <table class="board-container">
         <tbody class="board"></tbody>
     </table>
+    <div class="leaderboard-container">
+        <ol class="leaderboard">
+        </ol>
+    </div>
     
 
     <footer>Assaf Peretz</footer>
@@ -33,6 +41,7 @@
     <script src="js/game.js"></script>
     <script src="js/gameControls.js"></script>
     <script src="js/cellClicks.js"></script>
+    <script src="js/leaderBoard.js"></script>
     <script src="js/utils.js"></script>
 </body>
 </html>

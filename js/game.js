@@ -2,25 +2,27 @@
 
 var gBoard
 
-var	gGame = {
-		isOn: false,
-		isFirstTurn: true,
-		shownCount: 0,
-		numsCount: 0,
-		markedCount: 0,
-		secsPassed: 0,
-		mines: [],
-		flaggedCells: []
-		}
+var gGame = {
+	isOn: false,
+	isFirstTurn: true,
+	lives: 3,
+	hintMode: false,
+	remainingHints: 3,
+	numsCount: 0,
+	markedCount: 0,
+	secsPassed: 0,
+	mines: [],
+	flaggedCells: [],
+}
 
-
-		
 function onInit() {
-
 	gBoard = buildBoard()
 	renderBoard(gBoard)
 
 	initializeClickListeners()
+	showRemainingMines()
+	showRemainingLives()
+	showLeaderboard()
 
 	gGame.isOn = true
 }
@@ -30,22 +32,20 @@ function buildBoard() {
 	const board = []
 
 	for (var i = 0; i < size; i++) {
-        board[i] = []
+		board[i] = []
 
 		for (var j = 0; j < size; j++) {
-				board[i][j] = {
-					location: { i, j },
-					isMine: false,
-					isShown: false,
-					isFlagged: false,
-					mineNegCount: 0
-				}
+			board[i][j] = {
+				location: { i, j },
+				isMine: false,
+				isShown: false,
+				isFlagged: false,
+				mineNegCount: 0,
+			}
 		}
 	}
 	return board
 }
-
-
 
 // FIXED MINE LOCATIONS
 // function buildBoard() {
@@ -93,12 +93,15 @@ function renderBoard(board) {
 }
 
 function setMines(negCells, rowIdx, colIdx) {
-
 	for (var i = 0; i < gLevel.MINES; i++) {
+		var randCell =
+			gBoard[getRandomInt(0, gLevel.SIZE)][getRandomInt(0, gLevel.SIZE)]
 
-		var randCell = gBoard[getRandomInt(0, gLevel.SIZE)][getRandomInt(0, gLevel.SIZE)]
-
-		if (gGame.mines.includes(randCell.location) || negCells.includes(randCell) || randCell === gBoard[rowIdx][colIdx]) {
+		if (
+			gGame.mines.includes(randCell.location) ||
+			negCells.includes(randCell) ||
+			randCell === gBoard[rowIdx][colIdx]
+		) {
 			i--
 			continue
 		}
@@ -106,21 +109,19 @@ function setMines(negCells, rowIdx, colIdx) {
 		randCell.isMine = true
 		gGame.mines.push(randCell.location)
 	}
+	showRemainingMines()
 }
 
 function setMinesNegCount(board, rowIdx, colIdx) {
-	
 	var mineNegCount = 0
 	var negCells = []
 
-	for (var i = rowIdx - 1 ; i <= rowIdx + 1; i++) {
-
+	for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
 		if (i < 0 || i >= board.length) continue
 
 		for (var j = colIdx - 1; j <= colIdx + 1; j++) {
-
 			if (j < 0 || j >= board[0].length) continue
-        	if (i === rowIdx && j === colIdx) continue	
+			if (i === rowIdx && j === colIdx) continue
 
 			if (board[i][j].isMine) mineNegCount++
 			else negCells.push(board[i][j])
@@ -128,14 +129,14 @@ function setMinesNegCount(board, rowIdx, colIdx) {
 	}
 
 	if (gGame.isFirstTurn) {
-        gGame.isFirstTurn = false
+		gGame.isFirstTurn = false
 		setMines(negCells, rowIdx, colIdx)
-    }
+	}
 
 	board[rowIdx][colIdx].mineNegCount = mineNegCount
 
-	if (mineNegCount === 0) {
-		negCells.forEach(cell => {
+	if (mineNegCount === 0 && !gGame.hintMode) {
+		negCells.forEach((cell) => {
 			if (!cell.isMine) onCellClicked(board, cell.location.i, cell.location.j)
 		})
 		return ''
@@ -144,13 +145,29 @@ function setMinesNegCount(board, rowIdx, colIdx) {
 	return mineNegCount
 }
 
+function blowUpMine(clickedMine) {
+	const rowIdx = clickedMine.location.i
+	const colIdx = clickedMine.location.j
+	const elMine = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
+
+	clickedMine.isBlownUp = true
+
+	elMine.classList.add('blown-up')
+
+	gLevel.MINES--
+
+	showRemainingMines()
+	renderCell(rowIdx, colIdx, 0)
+}
+
 function checkWin() {
 	const elModal = document.querySelector('.modal')
+	const elResetBtn = document.querySelector('.reset-btn')
 
-	if(gLevel.MINES !== gGame.markedCount) return
+	if (gLevel.MINES !== gGame.markedCount) return
 
 	for (var i = 0; i < gGame.flaggedCells.length; i++) {
-		if(!gGame.flaggedCells[i].isMine) return
+		if (!gGame.flaggedCells[i].isMine) return
 	}
 
 	for (var i = 0; i < gBoard.length; i++) {
@@ -160,19 +177,30 @@ function checkWin() {
 			if (!currCell.isShown) return
 		}
 	}
+	clearInterval(gTimer)
 
+	getPlayerNameAndTime()
+	elResetBtn.src = 'imgs/winning.png'
 	elModal.innerHTML = 'YOU WIN!'
 }
 
 function gameOver() {
 	const elModal = document.querySelector('.modal')
-	
+	const elLivesSpan = document.querySelector('.lives')
+	const elResetBtn = document.querySelector('.reset-btn')
+
+	clearInterval(gTimer)
+
 	for (var i = 0; i < gGame.mines.length; i++) {
 		const cellRowIdx = gGame.mines[i].i
 		const cellColIdx = gGame.mines[i].j
-		
+
 		renderCell(cellRowIdx, cellColIdx, BOMB)
 	}
+
+	elLivesSpan.innerHTML = '💔'
+
+	elResetBtn.src = 'imgs/lose.png'
 	elModal.innerHTML = 'You Lost...'
 	gGame.isOn = false
 }

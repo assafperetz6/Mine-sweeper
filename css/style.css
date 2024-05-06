@@ -15,33 +15,46 @@ body {
 
 h1 {
     background-color: rgba(143, 191, 255, 0.467);
-    
-}
-
-.modal {
-    margin: 20px auto;
-    height: 22px;
-    font-size: larger;
+    margin: 0;
+    padding: 20px 0;
 }
 
 .game-controls {
-    background-color: rgba(143, 191, 255, 0.467);
+    background-color: rgba(113, 171, 246, 0.467);
 }
 
 .game-info {
     display: flex;
-    /* justify-content:flex-start; */
+    width: 600px;
+    justify-content: center;
     align-items: center;
     margin: 0 auto;
-    width: 600px;
+    padding: 20px 0;
     
 }
-.game-mode-btns {
-    margin: 0 5vh;
+
+.lives {
+    position: relative;
+    top: 30px;
+    right: 150px;
 }
 
-.reset-game {
-    margin: 0 5vh;
+.modal {
+    height: 22px;
+    margin: 20px auto 0px auto;
+    padding: 50px 20vw;
+    background-color: rgba(100, 126, 160, 0.467);
+    font-size: larger;
+}
+
+.hint-btn {
+    height: 2em;
+    width: 4em;
+    background-color: rgba(100, 126, 160, 0.467);
+}
+
+.reset-btn {
+    margin: 0 2vh;
     width: 2em;
     height: 2em;
     border-radius: 50%;
@@ -65,9 +78,22 @@ h1 {
     background-color: rgb(93, 93, 93);
 }
 
-.cell:hover, .reset-game:hover {
+.blown-up {
+    background-color: rgb(50, 49, 49);
+}
+
+.cell:hover, .reset-btn:hover {
     cursor: pointer;
     background-color: rgb(93, 93, 93);
+}
+
+.leaderboard-container {
+    display: inline-flex;
+    width: auto;
+}
+
+.leaderboard {
+    text-align: left;
 }
 
 footer {
