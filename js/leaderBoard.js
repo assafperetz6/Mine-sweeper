@@ -1,20 +1,31 @@
 'use strict'
 
-var gEntryIdx = 1
+function getEntryIdx() {
+
+    if (!+localStorage.getItem('entryIdx')) localStorage.setItem('entryIdx', 1)
+
+    return +localStorage.getItem('entryIdx')
+}
 
 function getPlayerNameAndTime() {
+    
+    if(gGame.customMines) return
+
     var playerName = prompt('Enter your name:')
     var time = document.querySelector('.timer').innerHTML
 
     var leaderboardEntry = {
-        name: playerName,
+        name: playerName ? playerName : 'Unknown Player',
         time,
-        level: gLevel.LEVEL
+        level: gLevel.LEVEL,
+        customMode: gGame.customMines
     }
 
     var serializedEntry = JSON.stringify(leaderboardEntry)
+    var entryIdx = getEntryIdx() + 1
 
-    localStorage.setItem(gEntryIdx++, serializedEntry)
+    localStorage.setItem(entryIdx, serializedEntry)
+    localStorage.setItem('entryIdx', entryIdx)
 }
 
 function showLeaderboard() {
@@ -28,7 +39,7 @@ function showLeaderboard() {
         
         if(!entry) continue
         
-        if(entry.level == gLevel.LEVEL) leaderboard.push(entry)
+        if(entry.level == gLevel.LEVEL && !entry.customMode) leaderboard.push(entry)
     }
     if(!leaderboard) return
 

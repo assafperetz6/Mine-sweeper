@@ -1,25 +1,42 @@
 'use strict'
 
+const elModal = document.querySelector('.modal')
+const elBoard = document.querySelector('.board')
+
 var gBoard
 
-var gGame = {
-	isOn: false,
-	isFirstTurn: true,
-	lives: 3,
-	hintMode: false,
-	remainingHints: 3,
-	numsCount: 0,
-	markedCount: 0,
-	secsPassed: 0,
-	mines: [],
-	flaggedCells: [],
+var gLevel = {
+	SIZE: 9,
+	MINES: 10,
+	LEVEL: 'easy'
 }
+
+var gGame
+var gTimer
 
 function onInit() {
 	gBoard = buildBoard()
-	renderBoard(gBoard)
+	const elBoard = renderBoard(gBoard)
 
-	initializeClickListeners()
+	gGame = {
+		isOn: false,
+		isFirstTurn: true,
+		isCustomModeOn: false,
+		customMines: false,
+		lives: 3,
+		hintMode: false,
+		remainingHints: 3,
+		remainingSafeClicks: 3,
+		numsCount: 0,
+		markedCount: 0,
+		secsPassed: 0,
+		blownUpMines: 0,
+		mines: [],
+		flaggedCells: [],
+		previousMoves: []
+	}
+
+	initializeClickListeners(elBoard)
 	showRemainingMines()
 	showRemainingLives()
 	showLeaderboard()
@@ -84,12 +101,14 @@ function renderBoard(board) {
 		for (var j = 0; j < board[0].length; j++) {
 			const className = `cell cell-${i}-${j}`
 
-			strHTML += `<td class="${className}" data-i="${i}" data-j="${j}" onclick="onCellClicked(gBoard, ${i}, ${j})"></td>`
+			// onclick="onCellClicked(gBoard, ${i}, ${j})"
+			strHTML += `<td class="${className}" data-i="${i}" data-j="${j}"></td>`
 		}
 		strHTML += '</tr>'
 	}
-	const elBoard = document.querySelector('.board')
+
 	elBoard.innerHTML = strHTML
+	return elBoard
 }
 
 function setMines(negCells, rowIdx, colIdx) {
@@ -130,7 +149,7 @@ function setMinesNegCount(board, rowIdx, colIdx) {
 
 	if (gGame.isFirstTurn) {
 		gGame.isFirstTurn = false
-		setMines(negCells, rowIdx, colIdx)
+		if(!gGame.customMines) setMines(negCells, rowIdx, colIdx)
 	}
 
 	board[rowIdx][colIdx].mineNegCount = mineNegCount
@@ -154,17 +173,17 @@ function blowUpMine(clickedMine) {
 
 	elMine.classList.add('blown-up')
 
-	gLevel.MINES--
+	gGame.blownUpMines++
 
 	showRemainingMines()
 	renderCell(rowIdx, colIdx, 0)
 }
 
 function checkWin() {
-	const elModal = document.querySelector('.modal')
+
 	const elResetBtn = document.querySelector('.reset-btn')
 
-	if (gLevel.MINES !== gGame.markedCount) return
+	if (gGame.mines.length !== gGame.markedCount + gGame.blownUpMines) return
 
 	for (var i = 0; i < gGame.flaggedCells.length; i++) {
 		if (!gGame.flaggedCells[i].isMine) return
@@ -185,7 +204,6 @@ function checkWin() {
 }
 
 function gameOver() {
-	const elModal = document.querySelector('.modal')
 	const elLivesSpan = document.querySelector('.lives')
 	const elResetBtn = document.querySelector('.reset-btn')
 

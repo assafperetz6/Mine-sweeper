@@ -3,13 +3,40 @@
 const FLAG = '🚩'
 const BOMB = '💣'
 
+function initializeClickListeners(elBoard) {
+
+	elBoard.clickEventHandler = (el) => {
+		var rowIdx = +el.target.dataset.i
+		var colIdx = +el.target.dataset.j
+
+		saveBoardState(el)
+		onCellClicked(gBoard, rowIdx, colIdx)
+	}
+
+	elBoard.addEventListener('click', elBoard.clickEventHandler)
+
+	elBoard.addEventListener('contextmenu', saveBoardState, false)
+	elBoard.addEventListener('contextmenu', flagCell, false)
+
+
+
+
+}
+
 function onCellClicked(board, rowIdx, colIdx) {
 	// debugger
 	if (!gGame.isOn) return
 
 	const clickedCell = board[rowIdx][colIdx]
 
+	if(gGame.isCustomMode) {
+		handleCustomModeClick(board, rowIdx, colIdx)
+		showRemainingMines()
+		return
+	}
+
 	if (gGame.isFirstTurn) startTimer()
+
 	if (clickedCell.isShown) return
 	if (clickedCell.isBlownUp) return
 	if (clickedCell.isFlagged) return
@@ -36,15 +63,10 @@ function onCellClicked(board, rowIdx, colIdx) {
 	clickedCell.isShown = true
 
 	setMinesNegCount(board, rowIdx, colIdx)
-
 	renderCell(rowIdx, colIdx, clickedCell.mineNegCount)
 
+	elBoard.previousBoard = gBoard
 	checkWin()
-}
-
-function initializeClickListeners() {
-	const elBoard = document.querySelector('.board')
-	elBoard.addEventListener('contextmenu', flagCell, false)
 }
 
 function showHint(board, rowIdx, colIdx) {
@@ -70,7 +92,7 @@ function showHint(board, rowIdx, colIdx) {
 
 	setTimeout(() => {
 		revealedCells.forEach((cell) => {
-			renderCell(cell.location.i, cell.location.j, '')
+			renderCell(cell.location.i, cell.location.j, -1)
 		})
 	}, 1000)
 }
@@ -103,19 +125,37 @@ function flagCell(ev) {
 	renderCell(cellRowIdx, cellColIdx, value)
 
 	showRemainingMines()
+
 	checkWin()
 
 	return false
 }
 
+function handleCustomModeClick(board, rowIdx, colIdx) {
+
+	const clickedCell = board[rowIdx][colIdx]
+	const elCell = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
+
+	clickedCell.isMine = true
+	gGame.mines.push(clickedCell)
+
+	elCell.classList.add('flicker')
+	setTimeout(() => elCell.classList.remove('flicker'), 2000)
+
+	gGame.previousMoves.push(gBoard.slice())
+}
+
 function renderCell(rowIdx, colIdx, value) {
 	const elCell = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
 
-	if (value === '') {
-		elCell.classList.remove('empty-cell')
-	} else if (value === 0) {
+	if (value === 0) {
 		value = ''
 		elCell.classList.add('empty-cell')
+	}
+	else if (value === 'undo') {
+		value = ''
+		elCell.classList.remove('empty-cell')
+		elCell.classList.remove('blown-up')
 	}
 
 	elCell.innerText = value

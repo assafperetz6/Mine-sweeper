@@ -13,16 +13,25 @@
     <div class="game-controls">
         <div class="game-info">
             <div class="game-mode-btns">
-                <button class="hint-btn" onclick="getHint()">3X💡</button>
-                <button id="easy-btn" onclick="onSetGameLevel('easy')">Easy</button>
-                <button id="medium-btn" onclick="onSetGameLevel('medium')">Medium</button>
-                <button id="hard-btn" onclick="onSetGameLevel('hard')">Hard</button>
-                <img class="reset-btn" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
+                <div class="special-btns-container">
+                    <button class="btn custom-mode-btn" onclick="onToggleCustomMode()">Custom Mode</button>
+                    <button class="btn safe-click-btn" onclick="onSafeClick()">Safe Click <br>X3</button>
+                    <button class="btn hint-btn" onclick="onGetHint()">💡X3</button>
+                </div>
+                <div class="level-btn-container">
+                    <button id="easy-btn" class="btn level-btn" onclick="onSetGameLevel('easy')">Easy</button>
+                    <button id="medium-btn" class="btn level-btn" onclick="onSetGameLevel('medium')">Medium</button>
+                    <button id="hard-btn" class="btn level-btn" onclick="onSetGameLevel('hard')">Hard</button>
+                </div>
+                <div class="reset-btn-container">
+                    <img class="btn reset-btn" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
+                </div>
             </div>
-            <span>Time elapsed: 
+            <div class="timer-container">Time elapsed: 
                 <span class="timer">00:00</span>
-                <span class="lives"></span>
-            </span>
+            </div>
+            <div class="lives"></div>
+            <button class="btn undo-btn" onclick="undoMove()">Undo</button>
         </div>
         <div class="modal"></div>
     </div>
