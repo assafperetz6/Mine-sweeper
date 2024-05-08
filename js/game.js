@@ -21,16 +21,21 @@ function onInit() {
 	gGame = {
 		isOn: false,
 		isFirstTurn: true,
+		lives: 3,
+
 		isCustomModeOn: false,
 		customMines: false,
-		lives: 3,
+		
 		hintMode: false,
 		remainingHints: 3,
 		remainingSafeClicks: 3,
-		numsCount: 0,
-		markedCount: 0,
-		secsPassed: 0,
+
+		megaHintMode: null,
+		megaHintCoords: [],
+
+		flaggedCount: 0,
 		blownUpMines: 0,
+		
 		mines: [],
 		flaggedCells: [],
 		previousMoves: []
@@ -116,11 +121,9 @@ function setMines(negCells, rowIdx, colIdx) {
 		var randCell =
 			gBoard[getRandomInt(0, gLevel.SIZE)][getRandomInt(0, gLevel.SIZE)]
 
-		if (
-			gGame.mines.includes(randCell.location) ||
+		if (gGame.mines.includes(randCell.location) ||
 			negCells.includes(randCell) ||
-			randCell === gBoard[rowIdx][colIdx]
-		) {
+			randCell === gBoard[rowIdx][colIdx]) {
 			i--
 			continue
 		}
@@ -154,7 +157,7 @@ function setMinesNegCount(board, rowIdx, colIdx) {
 
 	board[rowIdx][colIdx].mineNegCount = mineNegCount
 
-	if (mineNegCount === 0 && !gGame.hintMode) {
+	if (mineNegCount === 0 && !gGame.hintMode && !gGame.megaHintMode) {
 		negCells.forEach((cell) => {
 			if (!cell.isMine) onCellClicked(board, cell.location.i, cell.location.j)
 		})
@@ -162,6 +165,23 @@ function setMinesNegCount(board, rowIdx, colIdx) {
 	}
 
 	return mineNegCount
+}
+
+function negCountAfterExter(board, rowIdx, colIdx) {
+
+	for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+		if (i < 0 || i >= board.length) continue
+
+		for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+			if (j < 0 || j >= board[0].length) continue
+			if (i === rowIdx && j === colIdx) continue
+			if (!board[i][j].isShown) continue
+			
+			board[i][j].mineNegCount--
+			console.log(gBoard[i][j]);
+			renderCell(i, j, board[i][j].mineNegCount)
+		}
+	}
 }
 
 function blowUpMine(clickedMine) {
@@ -183,7 +203,7 @@ function checkWin() {
 
 	const elResetBtn = document.querySelector('.reset-btn')
 
-	if (gGame.mines.length !== gGame.markedCount + gGame.blownUpMines) return
+	if (gGame.mines.length !== gGame.flaggedCount + gGame.blownUpMines) return
 
 	for (var i = 0; i < gGame.flaggedCells.length; i++) {
 		if (!gGame.flaggedCells[i].isMine) return

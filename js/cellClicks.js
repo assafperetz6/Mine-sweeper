@@ -9,6 +9,12 @@ function initializeClickListeners(elBoard) {
 		var rowIdx = +el.target.dataset.i
 		var colIdx = +el.target.dataset.j
 
+		if (gGame.megaHintMode) {
+			onGetMegaHint(rowIdx, colIdx)
+			return
+		}
+		
+		if (gGame.isFirstTurn && !gGame.isCustomMode) startTimer()
 		saveBoardState(el)
 		onCellClicked(gBoard, rowIdx, colIdx)
 	}
@@ -17,10 +23,6 @@ function initializeClickListeners(elBoard) {
 
 	elBoard.addEventListener('contextmenu', saveBoardState, false)
 	elBoard.addEventListener('contextmenu', flagCell, false)
-
-
-
-
 }
 
 function onCellClicked(board, rowIdx, colIdx) {
@@ -34,8 +36,6 @@ function onCellClicked(board, rowIdx, colIdx) {
 		showRemainingMines()
 		return
 	}
-
-	if (gGame.isFirstTurn) startTimer()
 
 	if (clickedCell.isShown) return
 	if (clickedCell.isBlownUp) return
@@ -92,7 +92,7 @@ function showHint(board, rowIdx, colIdx) {
 
 	setTimeout(() => {
 		revealedCells.forEach((cell) => {
-			renderCell(cell.location.i, cell.location.j, -1)
+			renderCell(cell.location.i, cell.location.j, 'undo')
 		})
 	}, 1000)
 }
@@ -115,11 +115,11 @@ function flagCell(ev) {
 	if (!clickedCell.isFlagged) {
 		clickedCell.isFlagged = true
 		gGame.flaggedCells.push(clickedCell)
-		gGame.markedCount++
+		gGame.flaggedCount++
 	} else {
 		clickedCell.isFlagged = false
 		gGame.flaggedCells.pop()
-		gGame.markedCount--
+		gGame.flaggedCount--
 		value = ''
 	}
 	renderCell(cellRowIdx, cellColIdx, value)
@@ -137,7 +137,7 @@ function handleCustomModeClick(board, rowIdx, colIdx) {
 	const elCell = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
 
 	clickedCell.isMine = true
-	gGame.mines.push(clickedCell)
+	gGame.mines.push({ i: rowIdx, j: colIdx })
 
 	elCell.classList.add('flicker')
 	setTimeout(() => elCell.classList.remove('flicker'), 2000)
@@ -159,4 +159,39 @@ function renderCell(rowIdx, colIdx, value) {
 	}
 
 	elCell.innerText = value
+}
+
+function showMegaHint(coord1, coord2) {
+	var revealedCells = []
+
+	var bigRowIdx = Math.max(coord1.rowIdx, coord2.rowIdx)
+	var bigColIdx = Math.max(coord1.colIdx, coord2.colIdx)
+
+	var smallRowIdx = Math.min(coord1.rowIdx, coord2.rowIdx)
+	var smallColIdx = Math.min(coord1.colIdx, coord2.colIdx)
+
+	for (var i = smallRowIdx; i <= bigRowIdx; i++) {
+		for (var j = smallColIdx; j <= bigColIdx; j++) {
+			
+			var currCell = gBoard[i][j]
+			var currCellNegCount = setMinesNegCount(gBoard, i, j)
+
+			revealedCells.push(currCell)
+
+			if (currCell.isMine) renderCell(i, j, BOMB)
+			else renderCell(i, j, currCellNegCount)
+
+			if (i === smallRowIdx || i === bigRowIdx ||
+				j === smallColIdx || j === bigColIdx) makeCellFlicker(i, j)
+		}
+		
+	}
+	gGame.megaHintCoords = []
+	gGame.megaHintMode = false
+
+	setTimeout(() => {
+		revealedCells.forEach((cell) => {
+			if (!cell.isShown && !cell.isFlagged) renderCell(cell.location.i, cell.location.j, 'undo')
+		})
+	}, 2000)
 }

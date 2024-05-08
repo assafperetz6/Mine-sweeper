@@ -4,8 +4,8 @@ function resetGame() {
 
 	const elTimer = document.querySelector('.timer')
 	const elResetBtn = document.querySelector('.reset-btn')
-	const elHintBtn = document.querySelector('.hint-btn')
-	const elSafeClickBtn = document.querySelector('.safe-click-btn')
+	const elHintBtn = document.querySelector('.hint-btn .btn-text')
+	const elSafeClickBtn = document.querySelector('.safe-click-btn .btn-text')
 
 	clearInterval(gTimer)
 
@@ -50,7 +50,7 @@ function onSetGameLevel(level) {
 }
 
 function onGetHint() {
-	const elHintBtn = document.querySelector('.hint-btn')
+	const elHintBtn = document.querySelector('.hint-btn .btn-text')
 
 	if (!gGame.remainingHints) return
 	if (gGame.hintMode) return
@@ -61,10 +61,27 @@ function onGetHint() {
 	elHintBtn.innerHTML = `💡X${gGame.remainingHints}`
 }
 
+function onGetMegaHint(rowIdx, colIdx) {
+	
+	if (gGame.megaHintMode === false || gGame.isFirstTurn) return
+
+	if (gGame.megaHintMode === null) gGame.megaHintMode = true
+
+	else if (gGame.megaHintCoords.length < 2) {
+
+		gGame.megaHintCoords.push({ rowIdx, colIdx })
+		makeCellFlicker(rowIdx, colIdx)	
+		
+		if (gGame.megaHintCoords.length === 2) showMegaHint(gGame.megaHintCoords[0], gGame.megaHintCoords[1])
+	}
+	return
+}
+
+
 function onSafeClick() {
 	if(!gGame.remainingSafeClicks) return
 
-	const elSafeClickBtn = document.querySelector('.safe-click-btn')
+	const elSafeClickBtn = document.querySelector('.safe-click-btn .btn-text')
 
 	gGame.remainingSafeClicks--
 
@@ -109,11 +126,10 @@ function showRemainingMines() {
 	
 	else if (gGame.customMines) {
 		elModal.innerHTML = 'Remaining mines: ' + String(gGame.mines.length - gGame.flaggedCells.length - gGame.blownUpMines)
-		console.log('hi');
 	}
 	
 	else
-		elModal.innerHTML = 'Remaining mines: ' + String(gLevel.MINES - gGame.flaggedCells.length - gGame.blownUpMines)
+		elModal.innerHTML = 'Remaining mines: ' + String(gGame.mines.length - gGame.flaggedCells.length - gGame.blownUpMines)
 }
 
 function showRemainingLives() {
@@ -186,4 +202,48 @@ function saveBoardState(el) {
 			return JSON.parse(JSON.stringify(cell))
 		})
 	}))
+}
+
+function toggleDarkMode() {
+
+	var elBody = document.querySelector('body')
+
+	elBody.classList.toggle('dark-mode')
+}
+
+function makeCellFlicker(rowIdx, colIdx) {
+	var elCell = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
+
+	elCell.classList.add('flicker')
+
+	setTimeout( () => elCell.classList.remove('flicker'), 2000)
+}
+
+function exterminate() {
+
+	if (gGame.isFirstTurn) return
+
+	shuffleArr(gGame.mines)
+
+	for (var i = 0; i < 3; i++) {
+
+		var bombCoords = gGame.mines.at(-1)
+		var currBomb = gBoard[bombCoords.i][bombCoords.j]
+
+		var elCell = document.querySelector(`.cell-${bombCoords.i}-${bombCoords.j}`)
+		
+		if (currBomb.isBlownUp) {
+			i--
+			continue
+		}
+		else {
+			gGame.mines.pop()
+			currBomb.isMine = false
+			negCountAfterExter(gBoard, bombCoords.i, bombCoords.j)
+			
+
+			elCell.classList.add('diffused')
+		}
+	}
+	showRemainingMines()
 }
