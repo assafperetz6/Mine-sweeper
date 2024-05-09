@@ -189,12 +189,12 @@ function undoMove() {
 }
 
 function saveBoardState(el) {
-
+	
 	var rowIdx = el.target.dataset.i
 	var colIdx = el.target.dataset.j
-
+	
 	var clickedCell = gBoard[rowIdx][colIdx]
-
+	
 	if(clickedCell.isShown || clickedCell.isFlagged) return
 
 	gGame.previousMoves.push(gBoard.map(row => {	
@@ -221,7 +221,10 @@ function makeCellFlicker(rowIdx, colIdx) {
 
 function exterminate() {
 
-	if (gGame.isFirstTurn) return
+	if (gGame.isFirstTurn) {
+		elMessageForPlayer.classList.remove('hidden')
+		return
+	}
 
 	shuffleArr(gGame.mines)
 
@@ -239,6 +242,7 @@ function exterminate() {
 		else {
 			gGame.mines.pop()
 			currBomb.isMine = false
+			currBomb.isShown = true
 			negCountAfterExter(gBoard, bombCoords.i, bombCoords.j)
 			
 
@@ -246,4 +250,8 @@ function exterminate() {
 		}
 	}
 	showRemainingMines()
+}
+
+function showMessage(message) {
+
 }

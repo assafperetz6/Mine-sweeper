@@ -7,51 +7,64 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body onload="onInit()">
-    <h1 onclick="toggleDarkMode()">Mine sweeper</h1>
 
+    <h1 onclick="toggleDarkMode()">Mine sweeper</h1>
     
-    <div class="game-controls">
-        <div class="game-info">
-            <div class="game-mode-btns">
-                <div class="left special-btns-container">
-                    <button class="btn custom-mode-btn" onclick="onToggleCustomMode()"><span class="btn-text">Custom Mode</span></button>
-                    <button class="btn safe-click-btn" onclick="onSafeClick()"><span class="btn-text">Safe Click <br>X3</span></button>
-                    <button class="btn hint-btn" onclick="onGetHint()"><span class="btn-text">💡X3</span></button>
-                </div>
-                <div class="level-btn-container">
-                    <button id="easy-btn" class="btn level-btn" onclick="onSetGameLevel('easy')"><span class="btn-text">Easy</span></button>
-                    <button id="medium-btn" class="btn level-btn" onclick="onSetGameLevel('medium')"><span class="btn-text">Medium</span></button>
-                    <button id="hard-btn" class="btn level-btn" onclick="onSetGameLevel('hard')"><span class="btn-text">Hard</span></button>
-                </div>
-                <div class="reset-btn-container">
-                    <img class="btn reset-btn" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
-                </div>
+    <div class="top-bar">
+
+        <div class="left-side game-mode-btns">
+            <div class="special-btns-container">
+                <button class="btn custom-mode-btn" onclick="onToggleCustomMode()"><span class="btn-text">Custom Mode</span></button>
+                <button class="btn safe-click-btn" onclick="onSafeClick()"><span class="btn-text">Safe Click <br>X3</span></button>
+                <button class="btn hint-btn" onclick="onGetHint()"><span class="btn-text">💡X3</span></button>
             </div>
+
+            <div class="level-btn-container">
+                <button id="easy-btn" class="btn level-btn" onclick="onSetGameLevel('easy')"><span class="btn-text">Easy</span></button>
+                <button id="medium-btn" class="btn level-btn" onclick="onSetGameLevel('medium')"><span class="btn-text">Medium</span></button>
+                <button id="hard-btn" class="btn level-btn" onclick="onSetGameLevel('hard')"><span class="btn-text">Hard</span></button>
+            </div>
+        </div>
+        
+        <div class="center">
             <div class="timer-container">Time elapsed: 
                 <span class="timer">00:00</span>
             </div>
-            <div class="lives"></div>
 
-            <div class="right special-btns-container">
-                <button class="btn undo-btn" onclick="undoMove()"><span class="btn-text">Undo</span></button>
-                <button class="btn mega-hint-btn" onclick="onGetMegaHint()"><span class="btn-text">Mega Hint</span></button>
-                <button class="btn exterminate-btn" onclick="exterminate()"><span class="btn-text">EXTERMINATE!</span></button>
+            
+            <div class="reset-btn-container">
+                <img class="btn reset-btn" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
+            </div>
+        </div>
+        
+        <div class="right-side special-btns-container">
+            <button class="btn undo-btn" onclick="undoMove()"><span class="btn-text">Undo</span></button>
+            <button class="btn mega-hint-btn" onclick="onGetMegaHint()"><span class="btn-text">Mega Hint</span></button>
+            <button class="btn exterminate-btn" onclick="exterminate()"><span class="btn-text">EXTERMINATE!</span></button>
+        </div>
+        
+    </div>
+
+    <div class="main-container">
+        <div class="leaderboard-container">
+            <ol class="leaderboard"></ol>
+        </div>
+
+        <div class="board-and-modal-container">
+            <div class="modal-container">
+                <div class="modal"></div>
+                <div class="lives"></div>
+                
             </div>
 
+            <table class="board-container">
+                <tbody class="board"></tbody>
+            </table>
+
         </div>
-        <div class="modal"></div>
+        
+        <div class="message"></div>
     </div>
-    <div class="board-container">
-        <table>
-            <tbody class="board"></tbody>
-        </table>
-    </div>
-    <!-- <div class="message">Try to play first...</div> -->
-    <div class="leaderboard-container">
-        <ol class="leaderboard">
-        </ol>
-    </div>
-    
 
     <footer>Assaf Peretz</footer>
     

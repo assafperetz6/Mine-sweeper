@@ -6,6 +6,8 @@ const BOMB = '💣'
 function initializeClickListeners(elBoard) {
 
 	elBoard.clickEventHandler = (el) => {
+		if(!el.target.classList.contains('cell')) return
+
 		var rowIdx = +el.target.dataset.i
 		var colIdx = +el.target.dataset.j
 
