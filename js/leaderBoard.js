@@ -31,7 +31,7 @@ function getPlayerNameAndTime() {
 function showLeaderboard() {
     const elLeaderboard = document.querySelector('.leaderboard-container')
     
-    elLeaderboard.innerHTML = ''
+    elLeaderboard.innerHTML = 'Leaderboard:'
     var leaderboard = []
     
     for (var i = 1; i <= localStorage.length; i++) {
@@ -50,5 +50,5 @@ function showLeaderboard() {
         if(!leaderboard[i]) continue
         elLeaderboard.innerHTML += `<li>${leaderboard[i].name}: ${leaderboard[i].time}</li>`    
     }
-    if (leaderboard.length === 0) elLeaderboard.classList.add('hidden')
+    // if (leaderboard.length === 0) elLeaderboard.classList.add('hidden')
 }
