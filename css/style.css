@@ -39,7 +39,7 @@ body {
     transition: 1s;
 }
 
-h1 {
+.heading {
     background-color: var(--header-footer-color);
     margin: 0;
     padding: 20px 0 10px 0;
@@ -143,6 +143,8 @@ h1 {
 .main-container {
     display: flex;
 
+    /* justify-content: space-evenly; */
+
 }
 
 .board-and-modal-container {
@@ -150,6 +152,9 @@ h1 {
     flex-direction: column;
 
     align-items: center;
+
+    width:fit-content;
+    /* max-width: 32%; */
 }
 
 .modal-container {
@@ -177,31 +182,56 @@ h1 {
     display: flex;
     justify-content: center;
     margin: 20px 0;
-    
-    width: 100%;
 }
 
-.leaderboard-container, .message {
-    border-radius: 20px;
-    padding: 5px 40px;
-    margin: 20px 100px;
-    width: 25%;
+.leaderboard-container, .info-view {
+    min-width: 12%;
+    max-width: 25%;
     max-height: 50vh;
 
-    text-align: left;
+    justify-content: center;
 
+    margin: 20px 100px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 20px;
+    
     background-color: var(--btn-color);
+    overflow: hidden;
+    
+    font-size: larger;
 }
 
 .leaderboard {
     
     padding-left: 0;
-    font-size: small;
+    margin-left: 0;
+    
+    font-size: medium;
+
+    text-align: center;
+}
+
+.info-view {
+    
+    padding-right: 0;
+    margin-right: 0;
+    
+    font-size:x-large;
+    overflow-wrap: break-word;
+    text-align: center;
+    
+}
+
+.info-view-content {
+    
+    font-size: medium;
+
+    text-decoration: none;
 }
 
 .cell {
     font-size: 1.3em;
-    width: 1.3em;
+    min-width: 1.3em;
     height: 1.3em;
     border: 1px solid rgb(77, 77, 77);
     color: var(--cell-text-color);

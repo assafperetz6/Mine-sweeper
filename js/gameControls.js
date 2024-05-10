@@ -222,7 +222,7 @@ function makeCellFlicker(rowIdx, colIdx) {
 function exterminate() {
 
 	if (gGame.isFirstTurn) {
-		elMessageForPlayer.classList.remove('hidden')
+		elInfoView.innerHTML = 'Maybe start playing first?'
 		return
 	}
 
@@ -252,6 +252,57 @@ function exterminate() {
 	showRemainingMines()
 }
 
-function showMessage(message) {
+function showMessage(ev) {
 
+	if (ev.target.classList.contains('cell')) {
+		elInfoView.innerHTML = `cell: ${ev.target.dataset.i}-${ev.target.dataset.j}`
+	}
+	else if (ev.target.classList.contains('exterminate-btn')) {
+		elInfoView.innerHTML = 'This does the job for you...'
+	}
+	else if (ev.target.classList.contains('mega-hint-btn')) {
+		elInfoView.innerHTML = 'Go ahead, <br> cheat your way out of this.'
+	}
+	else if (ev.target.classList.contains('undo-btn')) {
+		elInfoView.innerHTML = `It's OK, <br> everyone makes mistakes`
+	}
+	else if (ev.target.classList.contains('reset-btn')) {
+		elInfoView.innerHTML = `You f*** it up again, did you?`
+	}
+	else if (ev.target.classList.contains('timer-container')) {
+		elInfoView.innerHTML = `We're not getting any younger, are we?`
+	}
+	else if (ev.target.classList.contains('easy-btn')) {
+		elInfoView.innerHTML = `First, learn the ropes.`
+	}
+	else if (ev.target.classList.contains('medium-btn')) {
+		elInfoView.innerHTML = `Now, get better at this.`
+	}
+	else if (ev.target.classList.contains('hard-btn')) {
+		elInfoView.innerHTML = `MASTER THIS GAME`
+	}
+	else if (ev.target.classList.contains('custom-mode-btn')) {
+		elInfoView.innerHTML = `Set mines for your friends <br> (if you have any)`
+	}
+	else if (ev.target.classList.contains('safe-click-btn')) {
+		elInfoView.innerHTML = `This might help you <br> (but it usually doesn't)`
+	}
+	else if (ev.target.classList.contains('hint-btn')) {
+		elInfoView.innerHTML = `This is for those without any original ideas`
+	}
+	else if (ev.target.classList.contains('mega-hint-btn')) {
+		elInfoView.innerHTML = `Like the one on the left, <br> but you won't really remember anything`
+	}
+	else if (ev.target.classList.contains('leaderboard-container')) {
+		elInfoView.innerHTML = `Everyone here <br> is better than you`
+	}
+	else if (ev.target.classList.contains('heading')) {
+		elInfoView.innerHTML = `This might shed a different light on the whole situation`
+	}
+	else if (ev.target.classList.contains('info-view')) {
+		elInfoView.innerHTML = `This one's kind of self-explenatory, <br> don't you think?`
+	}
+
+
+	else elInfoView.innerHTML = ''
 }

@@ -22,9 +22,13 @@ function initializeClickListeners(elBoard) {
 	}
 
 	elBoard.addEventListener('click', elBoard.clickEventHandler)
-
+	
 	elBoard.addEventListener('contextmenu', saveBoardState, false)
 	elBoard.addEventListener('contextmenu', flagCell, false)
+
+	document.addEventListener('mousemove', (ev) => {
+		showMessage(ev)
+	})
 }
 
 function onCellClicked(board, rowIdx, colIdx) {

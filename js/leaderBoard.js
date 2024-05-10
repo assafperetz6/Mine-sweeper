@@ -29,9 +29,9 @@ function getPlayerNameAndTime() {
 }
 
 function showLeaderboard() {
-    const elLeaderboard = document.querySelector('.leaderboard-container')
+    const elLeaderboard = document.querySelector('.leaderboard')
     
-    elLeaderboard.innerHTML = 'Leaderboard:'
+    elLeaderboard.innerHTML = ''
     var leaderboard = []
     
     for (var i = 1; i <= localStorage.length; i++) {

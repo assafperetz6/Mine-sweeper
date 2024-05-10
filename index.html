@@ -8,7 +8,7 @@
 </head>
 <body onload="onInit()">
 
-    <h1 onclick="toggleDarkMode()">Mine sweeper</h1>
+    <h1 class="heading" onclick="toggleDarkMode()">Mine sweeper</h1>
     
     <div class="top-bar">
 
@@ -20,9 +20,9 @@
             </div>
 
             <div class="level-btn-container">
-                <button id="easy-btn" class="btn level-btn" onclick="onSetGameLevel('easy')"><span class="btn-text">Easy</span></button>
-                <button id="medium-btn" class="btn level-btn" onclick="onSetGameLevel('medium')"><span class="btn-text">Medium</span></button>
-                <button id="hard-btn" class="btn level-btn" onclick="onSetGameLevel('hard')"><span class="btn-text">Hard</span></button>
+                <button class="btn easy-btn level-btn" onclick="onSetGameLevel('easy')"><span class="btn-text">Easy</span></button>
+                <button class="btn medium-btn level-btn" onclick="onSetGameLevel('medium')"><span class="btn-text">Medium</span></button>
+                <button class="btn hard-btn level-btn" onclick="onSetGameLevel('hard')"><span class="btn-text">Hard</span></button>
             </div>
         </div>
         
@@ -47,7 +47,7 @@
 
     <div class="main-container">
         <div class="leaderboard-container">
-            <span>Leaderboard:</span>
+            <div>Leaderboard</div>
             <ol class="leaderboard"></ol>
         </div>
 
@@ -64,7 +64,10 @@
 
         </div>
         
-        <div class="message"></div>
+        <div class="info-view">
+            <span>Info view</span>
+            <div class="info-view-content"></div>
+        </div>
     </div>
 
     <footer>Assaf Peretz</footer>

@@ -2,7 +2,7 @@
 
 const elModal = document.querySelector('.modal')
 const elBoard = document.querySelector('.board')
-const elMessageForPlayer = document.querySelector('.message')
+const elInfoView = document.querySelector('.info-view-content')
 
 var gBoard
 
