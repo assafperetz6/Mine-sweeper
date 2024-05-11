@@ -231,9 +231,9 @@ body {
 }
 
 .cell {
-    font-size: 1.3em;
-    min-width: 1.3em;
-    height: 1.3em;
+    font-size: medium;
+    min-width: 1.7rem;
+    height: 1.7rem;
     border: 1px solid var(--cell-border-color);
     color: var(--cell-text-color);
     background-color: var(--cell-color);
