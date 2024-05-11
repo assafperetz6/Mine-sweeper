@@ -1,28 +1,25 @@
 * {
     box-sizing: border-box;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    /* overflow: hidden; */
 }
 
 :root {
-    --primary-color: rgba(161, 163, 177, 0.632);
-    --secondary-color: rgba(122, 26, 146, 0.873);
-    --btn-color: rgba(90, 159, 250, 0.745);
-    --cell-text-color: rgb(17, 24, 24);
-    --header-footer-color: rgba(143, 191, 255, 0.467);
-    --empty-cell-color: rgba(143, 191, 255, 0.467);
-    
-    /* --primary-color: rgba(145, 23, 29, 0.648);
-    --secondery-color: rgb(212, 220, 255);
-    --btn-color: rgba(59, 78, 141, 0.812); */
+    --primary-color: #dff2d8c4;
+    --secondary-color: #0f0f0f;
+    --top-bar-color: #c2538980;
+    --btn-color: #cd898793;
+    --cell-text-color: #0f0f0f;
+    --header-footer-color: #b24178b7;
+    --empty-cell-color: #78a1bb;
 }
 
 .dark-mode {
-    --primary-color: rgba(1, 63, 105, 0.792);
-    --secondary-color: rgb(143, 199, 217);
-    --btn-color: rgba(143, 191, 255, 0.467);
-    --cell-text-color: rgb(184, 184, 184);
-    --header-footer-color: rgba(198, 126, 155, 0.695);
+    --primary-color: #1d1128d5;
+    --secondary-color: #c6e0ff;
+    --top-bar-color: #d47ba6c0;
+    --btn-color: #3a606e;
+    --cell-text-color: #c6e0ff;
+    --header-footer-color: #f5647570;
     --empty-cell-color: rgba(143, 191, 255, 0.467);
 
 }
@@ -43,7 +40,7 @@ body {
     background-color: var(--header-footer-color);
     margin: 0;
     padding: 20px 0 10px 0;
-    text-shadow: -5px -7px 1px var(--primary-color);
+    text-shadow: -3px -5px 1px var(--primary-color);
 }
 
 .top-bar {
@@ -57,7 +54,7 @@ body {
     padding: 20px 0;
     margin: 0 auto;
     
-    background-color: var(--primary-color);
+    background-color: var(--top-bar-color);
     
 
     font-size: large;
@@ -104,12 +101,10 @@ body {
     border: 2px solid var(--secondary-color);
     margin: 0 3px;
 
+    color: var(--cell-text-color);
     background-color: var(--btn-color);
 }
 
-.btn-text {
-    color: var(--cell-text-color)
-}
 .reset-btn {
 
     width: 2em;
@@ -142,9 +137,6 @@ body {
 
 .main-container {
     display: flex;
-
-    /* justify-content: space-evenly; */
-
 }
 
 .board-and-modal-container {
@@ -154,7 +146,6 @@ body {
     align-items: center;
 
     width:fit-content;
-    /* max-width: 32%; */
 }
 
 .modal-container {
@@ -182,6 +173,8 @@ body {
     display: flex;
     justify-content: center;
     margin: 20px 0;
+
+    user-select: none;
 }
 
 .leaderboard-container, .info-view {
@@ -212,6 +205,8 @@ body {
 }
 
 .info-view {
+
+    max-width: min-content;
     
     padding-right: 0;
     margin-right: 0;
@@ -224,6 +219,7 @@ body {
 
 .info-view-content {
     
+    margin: 20px 8px 0;
     font-size: medium;
 
     text-decoration: none;

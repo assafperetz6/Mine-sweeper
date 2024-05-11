@@ -3,41 +3,13 @@
 const FLAG = '🚩'
 const BOMB = '💣'
 
-function initializeClickListeners(elBoard) {
-
-	elBoard.clickEventHandler = (el) => {
-		if(!el.target.classList.contains('cell')) return
-
-		var rowIdx = +el.target.dataset.i
-		var colIdx = +el.target.dataset.j
-
-		if (gGame.megaHintMode) {
-			onGetMegaHint(rowIdx, colIdx)
-			return
-		}
-		
-		if (gGame.isFirstTurn && !gGame.isCustomMode) startTimer()
-		saveBoardState(el)
-		onCellClicked(gBoard, rowIdx, colIdx)
-	}
-
-	elBoard.addEventListener('click', elBoard.clickEventHandler)
-	
-	elBoard.addEventListener('contextmenu', saveBoardState, false)
-	elBoard.addEventListener('contextmenu', flagCell, false)
-
-	document.addEventListener('mousemove', (ev) => {
-		showMessage(ev)
-	})
-}
-
-function onCellClicked(board, rowIdx, colIdx) {
+function cellClicked(board, rowIdx, colIdx) {
 	// debugger
 	if (!gGame.isOn) return
 
 	const clickedCell = board[rowIdx][colIdx]
 
-	if(gGame.isCustomMode) {
+	if (gGame.isCustomMode) {
 		handleCustomModeClick(board, rowIdx, colIdx)
 		showRemainingMines()
 		return
@@ -82,12 +54,12 @@ function showHint(board, rowIdx, colIdx) {
 		if (i < 0 || i >= board.length) continue
 
 		for (var j = colIdx - 1; j <= colIdx + 1; j++) {
-            var currCell = board[i][j]
-            
-            if (j < 0 || j >= board[0].length) continue
+			var currCell = board[i][j]
+
+			if (j < 0 || j >= board[0].length) continue
 			if (currCell.isShown) continue
-			
-            var currCellNegCount = setMinesNegCount(board, i, j)
+
+			var currCellNegCount = setMinesNegCount(board, i, j)
 
 			revealedCells.push(currCell)
 
@@ -107,6 +79,7 @@ function flagCell(ev) {
 	ev.preventDefault()
 
 	if (!gGame.isOn) return
+	if (!ev.target.classList.contains('cell')) return
 
 	const elClickedCell = ev.target
 	const cellRowIdx = elClickedCell.dataset.i
@@ -138,7 +111,6 @@ function flagCell(ev) {
 }
 
 function handleCustomModeClick(board, rowIdx, colIdx) {
-
 	const clickedCell = board[rowIdx][colIdx]
 	const elCell = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
 
@@ -149,22 +121,6 @@ function handleCustomModeClick(board, rowIdx, colIdx) {
 	setTimeout(() => elCell.classList.remove('flicker'), 2000)
 
 	gGame.previousMoves.push(gBoard.slice())
-}
-
-function renderCell(rowIdx, colIdx, value) {
-	const elCell = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
-
-	if (value === 0) {
-		value = ''
-		elCell.classList.add('empty-cell')
-	}
-	else if (value === 'undo') {
-		value = ''
-		elCell.classList.remove('empty-cell')
-		elCell.classList.remove('blown-up')
-	}
-
-	elCell.innerText = value
 }
 
 function showMegaHint(coord1, coord2) {
@@ -178,7 +134,6 @@ function showMegaHint(coord1, coord2) {
 
 	for (var i = smallRowIdx; i <= bigRowIdx; i++) {
 		for (var j = smallColIdx; j <= bigColIdx; j++) {
-			
 			var currCell = gBoard[i][j]
 			var currCellNegCount = setMinesNegCount(gBoard, i, j)
 
@@ -187,17 +142,22 @@ function showMegaHint(coord1, coord2) {
 			if (currCell.isMine) renderCell(i, j, BOMB)
 			else renderCell(i, j, currCellNegCount)
 
-			if (i === smallRowIdx || i === bigRowIdx ||
-				j === smallColIdx || j === bigColIdx) makeCellFlicker(i, j)
+			if (
+				i === smallRowIdx ||
+				i === bigRowIdx ||
+				j === smallColIdx ||
+				j === bigColIdx
+			)
+				makeCellFlicker(i, j)
 		}
-		
 	}
 	gGame.megaHintCoords = []
 	gGame.megaHintMode = false
 
 	setTimeout(() => {
 		revealedCells.forEach((cell) => {
-			if (!cell.isShown && !cell.isFlagged) renderCell(cell.location.i, cell.location.j, 'undo')
+			if (!cell.isShown && !cell.isFlagged)
+				renderCell(cell.location.i, cell.location.j, 'undo')
 		})
 	}, 2000)
 }

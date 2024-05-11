@@ -3,50 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mine sweeper</title>
+    <title>💣 Mine sweeper</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body onload="onInit()">
 
-    <h1 class="heading" onclick="toggleDarkMode()">Mine sweeper</h1>
+    <h1 class="heading" data-info="This might shed a different light on the whole situation" onclick="toggleDarkMode()">Mine sweeper</h1>
     
     <div class="top-bar">
 
         <div class="left-side game-mode-btns">
             <div class="special-btns-container">
-                <button class="btn custom-mode-btn" onclick="onToggleCustomMode()"><span class="btn-text">Custom Mode</span></button>
-                <button class="btn safe-click-btn" onclick="onSafeClick()"><span class="btn-text">Safe Click <br>X3</span></button>
-                <button class="btn hint-btn" onclick="onGetHint()"><span class="btn-text">💡X3</span></button>
+                <button class="btn custom-mode-btn" data-info="Set mines for your friends <br> (if you have any)" onclick="onToggleCustomMode()">Custom Mode</button>
+                <button class="btn safe-click-btn" data-info="This might help you <br> (but it usually doesn't)" onclick="onSafeClick()">Safe Click <br>X3</button>
+                <button class="btn hint-btn" data-info="This is for those without any original ideas" onclick="onGetHint()">💡X3</button>
             </div>
 
             <div class="level-btn-container">
-                <button class="btn easy-btn level-btn" onclick="onSetGameLevel('easy')"><span class="btn-text">Easy</span></button>
-                <button class="btn medium-btn level-btn" onclick="onSetGameLevel('medium')"><span class="btn-text">Medium</span></button>
-                <button class="btn hard-btn level-btn" onclick="onSetGameLevel('hard')"><span class="btn-text">Hard</span></button>
+                <button class="btn easy-btn level-btn" data-info="First, learn the ropes." onclick="onSetGameLevel('easy')">Easy</button>
+                <button class="btn medium-btn level-btn" data-info="Now, get better at this." onclick="onSetGameLevel('medium')">Medium</button>
+                <button class="btn hard-btn level-btn" data-info="MASTER THIS GAME" onclick="onSetGameLevel('hard')">Hard</button>
             </div>
         </div>
         
         <div class="center">
-            <div class="timer-container">Time elapsed: 
+            <div class="timer-container" data-info="We're not getting any younger, are we?">Time elapsed: 
                 <span class="timer">00:00</span>
             </div>
 
             
             <div class="reset-btn-container">
-                <img class="btn reset-btn" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
+                <img class="btn reset-btn" data-info="You f*** it up again, did you?" src="imgs/Smiley.jpg" alt="Smiley" onclick="resetGame()">
             </div>
         </div>
         
         <div class="right-side special-btns-container">
-            <button class="btn undo-btn" onclick="undoMove()"><span class="btn-text">Undo</span></button>
-            <button class="btn mega-hint-btn" onclick="onGetMegaHint()"><span class="btn-text">Mega Hint</span></button>
-            <button class="btn exterminate-btn" onclick="exterminate()"><span class="btn-text">EXTERMINATE!</span></button>
+            <button class="btn undo-btn" data-info="It's OK, <br> everyone makes mistakes" onclick="undoMove()">Undo</button>
+            <button class="btn mega-hint-btn" data-info="Go ahead, <br> cheat your way out of this." onclick="onGetMegaHint()">Mega Hint</button>
+            <button class="btn exterminate-btn" data-info="This does the job for you..." onclick="exterminate()">EXTERMINATE!</button>
         </div>
         
     </div>
 
     <div class="main-container">
-        <div class="leaderboard-container">
+        <div data-info="Everyone here <br> is better than you" class="leaderboard-container">
             <div>Leaderboard</div>
             <ol class="leaderboard"></ol>
         </div>
@@ -64,17 +64,17 @@
 
         </div>
         
-        <div class="info-view">
-            <span>Info view</span>
+        <div data-info="This one's kind of self-explanatory, <br> don't you think?" class="info-view">Info view
             <div class="info-view-content"></div>
         </div>
     </div>
 
-    <footer>Assaf Peretz</footer>
+    <footer>Created by: Assaf Peretz</footer>
     
-    <script src="js/game.js"></script>
-    <script src="js/gameControls.js"></script>
+    <script src="js/main.js"></script>
     <script src="js/cellClicks.js"></script>
+    <script src="js/top-bar-buttons.js"></script>
+    <script src="js/domFunctions.js"></script>
     <script src="js/leaderBoard.js"></script>
     <script src="js/utils.js"></script>
 </body>
