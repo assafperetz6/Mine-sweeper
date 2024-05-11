@@ -246,7 +246,7 @@ function blowUpMine(clickedMine) {
 
 function checkWin() {
 	const elResetBtn = document.querySelector('.reset-btn')
-	debugger
+
 	if (gGame.mines.length !== gGame.flaggedCount + gGame.blownUpMines) return
 
 	for (var i = 0; i < gGame.flaggedCells.length; i++) {

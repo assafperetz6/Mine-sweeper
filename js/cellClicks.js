@@ -48,6 +48,7 @@ function cellClicked(board, rowIdx, colIdx) {
 }
 
 function showHint(board, rowIdx, colIdx) {
+	const elHintBtn = document.querySelector('.hint-btn')
 	var revealedCells = []
 
 	for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
@@ -67,6 +68,7 @@ function showHint(board, rowIdx, colIdx) {
 			else renderCell(i, j, currCellNegCount)
 		}
 	}
+	elHintBtn.classList.remove('flicker')
 
 	setTimeout(() => {
 		revealedCells.forEach((cell) => {

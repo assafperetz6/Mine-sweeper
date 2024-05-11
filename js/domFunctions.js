@@ -58,8 +58,17 @@ function makeCellFlicker(rowIdx, colIdx) {
 }
 
 function showMessage(ev) {
-	if (ev.target.classList.contains('cell')) {
+	const elCustomBtn = document.querySelector('.custom-mode-btn')
+	const elMegaHintBtn = document.querySelector('.mega-hint-btn')
+	const elHintBtn = document.querySelector('.hint-btn')
+	
+	if (elCustomBtn.classList.contains('flicker')) elInfoView.innerHTML = 'Click cells to place mines, than click on custom button to play.'
+	else if (elMegaHintBtn.classList.contains('flicker')) elInfoView.innerHTML = 'Click on two cells and see everything between them.'
+	else if (elHintBtn.classList.contains('flicker')) elInfoView.innerHTML = 'Pick a cell and see its perimeter.'
+
+	else if (ev.target.classList.contains('cell')) {
 		elInfoView.innerHTML = `cell: ${ev.target.dataset.i}-${ev.target.dataset.j}`
+
 	} else if (ev.target.dataset.info) {
 		elInfoView.innerHTML = ev.target.dataset.info
 	} else elInfoView.innerHTML = ''

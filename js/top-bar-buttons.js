@@ -25,7 +25,7 @@ function onSetGameLevel(level) {
 }
 
 function onGetHint() {
-	const elHintBtn = document.querySelector('.hint-btn .btn-text')
+	const elHintBtn = document.querySelector('.hint-btn')
 
 	if (!gGame.remainingHints) return
 	if (gGame.hintMode) return
@@ -33,19 +33,27 @@ function onGetHint() {
 	gGame.hintMode = true
 	gGame.remainingHints--
 
+	elHintBtn.classList.add('flicker')
 	elHintBtn.innerHTML = `💡X${gGame.remainingHints}`
 }
 
 function onGetMegaHint(rowIdx, colIdx) {
+	const elMegaHintBtn = document.querySelector('.mega-hint-btn')
+	
 	if (gGame.megaHintMode === false && gGame.isFirstTurn) return
+	
+	if (gGame.megaHintMode === null) {
 
-	if (gGame.megaHintMode === null) gGame.megaHintMode = true
+		gGame.megaHintMode = true
+		elMegaHintBtn.classList.add('flicker')
+	}
 	else if (gGame.megaHintCoords.length < 2) {
 		gGame.megaHintCoords.push({ rowIdx, colIdx })
 		makeCellFlicker(rowIdx, colIdx)
 
 		if (gGame.megaHintCoords.length === 2)
 			showMegaHint(gGame.megaHintCoords[0], gGame.megaHintCoords[1])
+			elMegaHintBtn.classList.remove('flicker')
 	}
 	return
 }
@@ -86,10 +94,11 @@ function onToggleCustomMode() {
 
 	gGame.isCustomMode = !gGame.isCustomMode
 	gGame.customMines = true
+
 	elCustomBtn.classList.toggle('flicker')
-
+	
 	showRemainingMines()
-
+	
 	return
 }
 
