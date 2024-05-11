@@ -116,6 +116,8 @@ function handleCustomModeClick(board, rowIdx, colIdx) {
 	const clickedCell = board[rowIdx][colIdx]
 	const elCell = document.querySelector(`.cell-${rowIdx}-${colIdx}`)
 
+	if (clickedCell.isMine) return
+	
 	clickedCell.isMine = true
 	gGame.mines.push({ i: rowIdx, j: colIdx })
 

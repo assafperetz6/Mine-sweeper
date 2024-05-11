@@ -257,7 +257,7 @@ function checkWin() {
 		for (var j = 0; j < gBoard[i].length; j++) {
 			const currCell = gBoard[i][j]
 			if (currCell.isMine) continue
-			if (!currCell.isShown) return
+			if (!currCell.isShown && !currCell.isBlownUp) return
 		}
 	}
 	clearInterval(gTimer)

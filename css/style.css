@@ -6,9 +6,11 @@
 :root {
     --primary-color: #dff2d8c4;
     --secondary-color: #0f0f0f;
+    --hover-color: #752a5fb6;
     --top-bar-color: #c2538980;
     --btn-color: #cd898793;
     --cell-text-color: #0f0f0f;
+    --cell-border-color: #1d1f21;
     --header-footer-color: #b24178b7;
     --empty-cell-color: #78a1bb;
 }
@@ -16,9 +18,12 @@
 .dark-mode {
     --primary-color: #1d1128d5;
     --secondary-color: #c6e0ff;
+    --hover-color: #cd8987;
     --top-bar-color: #d47ba6c0;
     --btn-color: #3a606e;
-    --cell-text-color: #c6e0ff;
+    --cell-border-color: #c6e0ff;
+    --cell-color: #f5647570;
+    --cell-text-color: #e6f1ff;
     --header-footer-color: #f5647570;
     --empty-cell-color: rgba(143, 191, 255, 0.467);
 
@@ -229,9 +234,9 @@ body {
     font-size: 1.3em;
     min-width: 1.3em;
     height: 1.3em;
-    border: 1px solid rgb(77, 77, 77);
+    border: 1px solid var(--cell-border-color);
     color: var(--cell-text-color);
-    background-color: var(--primary-color);
+    background-color: var(--cell-color);
     transition: 350ms;
 }
 
@@ -256,7 +261,7 @@ body {
 
 .cell:hover, .reset-btn:hover, h1:hover, .btn:hover {
     cursor: pointer;
-    background-color: var(--btn-color);
+    background-color: var(--hover-color);
     transition: 200ms;
 }
 
