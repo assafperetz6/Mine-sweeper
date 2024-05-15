@@ -3,6 +3,21 @@
 const FLAG = '🚩'
 const BOMB = '💣'
 
+function clickEventHandler(el) {
+	if (!el.target.classList.contains('cell')) return
+
+	var rowIdx = +el.target.dataset.i
+	var colIdx = +el.target.dataset.j
+	if (gGame.megaHintMode) {
+		megaHintClick(rowIdx, colIdx)
+		return
+	}
+
+	if (gGame.isFirstTurn && !gGame.isCustomMode) startTimer()
+	saveBoardState(el)
+	cellClicked(gBoard, rowIdx, colIdx)
+}
+
 function cellClicked(board, rowIdx, colIdx) {
 	// debugger
 	if (!gGame.isOn) return
@@ -127,7 +142,22 @@ function handleCustomModeClick(board, rowIdx, colIdx) {
 	gGame.previousMoves.push(gBoard.slice())
 }
 
+function megaHintClick(rowIdx, colIdx) {
+	if (gGame.megaHintCoords.length < 2) {
+		gGame.megaHintCoords.push({ rowIdx, colIdx })
+		makeCellFlicker(rowIdx, colIdx)
+
+		if (gGame.megaHintCoords.length === 2) {
+			showMegaHint(gGame.megaHintCoords[0], gGame.megaHintCoords[1])
+			gGame.megaHintMode = false
+		}
+	}
+	return
+}
+
 function showMegaHint(coord1, coord2) {
+	const elMegaHintBtn = document.querySelector('.mega-hint-btn')
+
 	var revealedCells = []
 
 	var bigRowIdx = Math.max(coord1.rowIdx, coord2.rowIdx)
@@ -156,12 +186,12 @@ function showMegaHint(coord1, coord2) {
 		}
 	}
 	gGame.megaHintCoords = []
-	gGame.megaHintMode = false
 
 	setTimeout(() => {
 		revealedCells.forEach((cell) => {
 			if (!cell.isShown && !cell.isFlagged)
+				elMegaHintBtn.classList.remove('flicker')
 				renderCell(cell.location.i, cell.location.j, 'undo')
 		})
-	}, 2000)
+	}, 3000)
 }

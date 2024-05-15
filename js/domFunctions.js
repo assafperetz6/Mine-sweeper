@@ -54,7 +54,7 @@ function makeCellFlicker(rowIdx, colIdx) {
 
 	elCell.classList.add('flicker')
 
-	setTimeout(() => elCell.classList.remove('flicker'), 2000)
+	setTimeout(() => elCell.classList.remove('flicker'), 3000)
 }
 
 function showMessage(ev) {

@@ -133,21 +133,6 @@ function renderCell(rowIdx, colIdx, value) {
 }
 
 function initializeClickListeners(elBoard) {
-	function clickEventHandler(el) {
-		if (!el.target.classList.contains('cell')) return
-
-		var rowIdx = +el.target.dataset.i
-		var colIdx = +el.target.dataset.j
-
-		if (gGame.megaHintMode) {
-			onGetMegaHint(rowIdx, colIdx)
-			return
-		}
-
-		if (gGame.isFirstTurn && !gGame.isCustomMode) startTimer()
-		saveBoardState(el)
-		cellClicked(gBoard, rowIdx, colIdx)
-	}
 
 	elBoard.addEventListener('click', clickEventHandler)
 
@@ -283,7 +268,7 @@ function resetGame() {
 	elSafeClickBtn.innerHTML = `Safe Click <br> X3`
 
 	elBoard.removeEventListener('contextmenu', flagCell)
-	elBoard.removeEventListener('click', elBoard.clickEventHandler)
+	elBoard.removeEventListener('click', clickEventHandler)
 	elBoard.removeEventListener('click', saveBoardState)
 
 	onInit()

@@ -37,23 +37,15 @@ function onGetHint() {
 	elHintBtn.innerHTML = `💡X${gGame.remainingHints}`
 }
 
-function onGetMegaHint(rowIdx, colIdx) {
+function onGetMegaHint() {
 	const elMegaHintBtn = document.querySelector('.mega-hint-btn')
-	
-	if (gGame.megaHintMode === false && gGame.isFirstTurn) return
-	
+
+	if (gGame.isFirstTurn) return
+
 	if (gGame.megaHintMode === null) {
 
 		gGame.megaHintMode = true
 		elMegaHintBtn.classList.add('flicker')
-	}
-	else if (gGame.megaHintCoords.length < 2) {
-		gGame.megaHintCoords.push({ rowIdx, colIdx })
-		makeCellFlicker(rowIdx, colIdx)
-
-		if (gGame.megaHintCoords.length === 2)
-			showMegaHint(gGame.megaHintCoords[0], gGame.megaHintCoords[1])
-			elMegaHintBtn.classList.remove('flicker')
 	}
 	return
 }
